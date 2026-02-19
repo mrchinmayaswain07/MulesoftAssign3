@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+      xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+        http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+        http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd">
+
+    <flow name="process-product-impl">
+
+        <!-- Call FakeStore System API -->
+        <http:request
+            config-ref="FakeStore_System_Config"
+            method="GET"
+            path="/system/products"/>
+
+        <set-variable variableName="totalFetched" value="#[sizeOf(payload)]"/>
+        <set-variable variableName="sentCount" value="0"/>
+
+        <foreach collection="#[payload]">
+
+            <!-- Business Rule -->
+            <choice>
+                <when expression="#[payload.price > 100]">
+                    <set-variable variableName="productType" value="Premium"/>
+                </when>
+                <otherwise>
+                    <set-variable variableName="productType" value="Standard"/>
+                </otherwise>
+            </choice>
+
+            <!-- Transform -->
+            <ee:transform>
+                <ee:message>
+                    <ee:set-payload><![CDATA[
+%dw 2.0
+output application/json
+---
+{
+  id: payload.id,
+  title: payload.title,
+  category: payload.category,
+  description: payload.description,
+  image: payload.image,
+  price: payload.price,
+  productType: vars.productType,
+  Category__c: payload.category == "electronics" ? "Electronics" : "Other",
+  Is_Active__c: payload.price >= 20
+}
+                    ]]></ee:set-payload>
+                </ee:message>
+            </ee:transform>
+
+            <!-- Publish to MQ -->
+            <vm:publish config-ref="VM_Config"
+                        queueName="product.sync.queue"
+                        sendCorrelationId="AUTO"/>
+			<set-variable variableName="sentCount"
+                          value="#[vars.sentCount + 1]"/>
+
+        </foreach>
+
+        <!-- Response -->
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[
+%dw 2.0
+output application/json
+---
+{
+  totalFetched: vars.totalFetched,
+  sentToQueue: vars.sentCount
+}
+                ]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+
+    </flow>
+
+</mule>

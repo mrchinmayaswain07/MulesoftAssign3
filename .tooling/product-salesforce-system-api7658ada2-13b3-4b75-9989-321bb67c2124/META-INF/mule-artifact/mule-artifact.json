@@ -1,0 +1,37 @@
+{
+  "configs": [
+    "interface.xml",
+    "error-handler.xml",
+    "global.xml",
+    "impl.xml"
+  ],
+  "secureProperties": [],
+  "supportedJavaVersions": [],
+  "redeploymentEnabled": true,
+  "name": "com.mycompany:product-salesforce-system-api:1.0.0-SNAPSHOT",
+  "minMuleVersion": "4.10.0",
+  "requiredProduct": "MULE_EE",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "exportedPackages": [],
+      "exportedResources": [
+        "application-types.xml",
+        "error-handler.xml",
+        "global.xml",
+        "impl.xml",
+        "interface.xml",
+        "log4j2.xml",
+        "properties/dev.yaml",
+        "properties/local.yaml"
+      ]
+    }
+  },
+  "bundleDescriptorLoader": {
+    "id": "mule",
+    "attributes": {}
+  },
+  "javaSpecificationVersions": [
+    "17"
+  ]
+}

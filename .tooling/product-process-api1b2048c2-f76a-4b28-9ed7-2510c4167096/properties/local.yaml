@@ -1,0 +1,12 @@
+http:
+  host: "localhost"
+  port: "8082"
+
+fakestore:
+  host: "localhost"
+  port: "8083"
+
+salesforce:
+  system:
+    host: "localhost"
+    port: "8084"

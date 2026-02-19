@@ -1,0 +1,9 @@
+
+http:
+  host: "0.0.0.0"
+  port: "${http.port}"
+
+fakestore:
+  protocol: "HTTPS"
+  host: "fakestoreapi.com"
+  port: "443"

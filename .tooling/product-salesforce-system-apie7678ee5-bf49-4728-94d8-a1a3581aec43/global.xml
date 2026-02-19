@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+      xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+        http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+        http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd">
+
+    <configuration-properties file="properties/${env}.yaml"/>
+
+    <!-- Listener -->
+    <http:listener-config name="HTTP_Listener_Config">
+        <http:listener-connection host="${http.host}" port="${http.port}" />
+    </http:listener-config>
+
+    <!-- Salesforce Config -->
+    <salesforce:sfdc-config name="Salesforce_Config">
+        <salesforce:oauth-user-pass-connection
+                consumerKey="${secure::salesforce.consumerKey}"
+                consumerSecret="${secure::salesforce.consumerSecret}"
+                username="${salesforce.username}"
+                password="${secure::salesforce.password}"
+                securityToken="${Secure::salesforce.securityToken}"/>
+    </salesforce:sfdc-config>
+
+    <vm:config name="VM_Config">
+    <vm:queues>
+        <vm:queue queueName="product.sync.dlq"/>
+    </vm:queues>
+</vm:config>
+
+
+</mule>

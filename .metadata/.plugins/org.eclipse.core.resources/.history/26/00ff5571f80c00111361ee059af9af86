@@ -1,0 +1,20 @@
+env: dev
+
+http:
+  host: "localhost"
+  port: "8084"
+
+#salesforce:
+#  username: "mrchinmayaswain07473@agentforce.com"
+#  password: "Benu@1234"
+#  securityToken: "gaqkdzII9MZDkBtPbq6H3byoB"
+#  consumerKey: "3MVG9rZjd7MXFdLj4OMCRvSWlzZt8GIR.0wNaTYeqXdm8iRSoMKDhTS6_dyvI8wNMF7My5HzVcCZQx2Lap_wj"
+#  consumerSecret: "AD0135DAC9BD396A8D9C7298E20CA0B1239B1E2045C3D54066B54083EEFA5D1D"
+# key chinmaya11082025
+
+salesforce:
+  username: "mrchinmayaswain07473@agentforce.com"
+  password: "![MSbEm2jMAarTuKewltBFmQ==]"
+  securityToken: "![nAgQxO7NuGSNskQKOoqcRqjZY22C2yEqBCChNM7LD+g=]"
+  consumerKey: "![GnVdcvWQ7sqLe3LxLV0RHeO4x4qky+zEPW2qnHV8MUD3gev4qtrdnhMEfBvDJoCUcvEgWaXA5iTYZ6zKhj+h4djts4oOVZ0fDmu3dvUUvSHBBv5J5xnQVA7U3QC+Uu3D]"
+  consumerSecret: "![7oCxD9em/6P1NNyphGsqP+9Jvz23SHjexix5TRFtu/WXnv07cx8rQBqbp27o0THCslGOI6/8WvBSn55c2k92szrUt/mObZ/3I/zqOAGnIbQ=]"
